@@ -101,5 +101,5 @@ async def access_token_valid_check(token = Depends(get_token)):
         if user.ban == True:
             raise UserIsBannedException
 
-        return user
+        return {"user": user}
     return{"detail": "false"}

@@ -6,6 +6,9 @@ import (
 	"rtsp_streamer/database"
 	"rtsp_streamer/routes"
 
+	"time"
+
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -30,8 +33,20 @@ func main() {
 	}
 	log.Println("Успешное подключение к базе данных")
 
-	// Настраиваем маршруты
+	// Создаём новый роутер Gin
 	r := gin.Default()
+
+	// Настраиваем CORS
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:3000", "http://localhost:8000"},
+		AllowMethods:     []string{"GET", "POST", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour, // Кешируем CORS-настройки на 12 часов
+	}))
+
+	// Настраиваем маршруты
 	routes.RegisterRoutes(r, db)
 
 	// Запускаем сервер

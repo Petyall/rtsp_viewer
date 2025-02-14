@@ -92,7 +92,7 @@ func StartFFMPEG(cameraID int, streamURL, viewerID string) error {
 	}
 
 	cmd := exec.Command("ffmpeg", "-i", streamURL, "-c:v", "libx264", "-preset",
-		"ultrafast", "-b:v", "500k", "-s", "640x360", "-f", "hls", "-hls_time",
+		"ultrafast", "-b:v", "500k", "-s", "1280x720", "-f", "hls", "-hls_time",
 		"2", "-hls_list_size", "10", "-hls_flags", "delete_segments",
 		"./streams/camera_"+strconv.Itoa(cameraID)+"/index.m3u8")
 

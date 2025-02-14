@@ -21,7 +21,7 @@ app.include_router(cameras_router)
 app.include_router(stream_router)
 app.include_router(importer_router)
 
-app.mount("/streams", StaticFiles(directory=settings.STREAMS_DIR), name="streams")
+# app.mount("/streams", StaticFiles(directory=settings.STREAMS_DIR), name="streams")
 
 origins = ["*"]
 
@@ -33,17 +33,21 @@ app.add_middleware(
     allow_headers=["Content-Type", "Authorization", "Set-Cookie", "Access-Control-Allow-Origin", "Access-Control-Allow-Headers"],
 )
 
-@app.middleware("http")
-async def log_requests(request: Request, call_next):
-    start_time = time.time()
+# @app.middleware("http")
+# async def log_requests(request: Request, call_next):
+#     start_time = time.time()
     
-    try:
-        logger.info(f"Started request: {request.method} {request.url} from {request.client.host}")
-        response = await call_next(request)
-        process_time = time.time() - start_time
-        logger.info(f"Ended request: {request.method} {request.url} in {round(process_time, 4)} second")
-        return response
-    except Exception as exc:
-        logger.error(f"Request error {request.method} {request.url}: {str(exc)}")
-        logger.error(traceback.format_exc())
-        raise exc
+#     try:
+#         logger.info(f"Started request: {request.method} {request.url} from {request.client.host}")
+#         response = await call_next(request)
+#         process_time = time.time() - start_time
+#         logger.info(f"Ended request: {request.method} {request.url} in {round(process_time, 4)} second")
+#         return response
+#     except Exception as exc:
+#         logger.error(f"Request error {request.method} {request.url}: {str(exc)}")
+#         logger.error(traceback.format_exc())
+#         raise exc
+
+# @router.get("/streams/{camera_id}/{filename}")
+# async def get_hls_segment(camera_id: int, filename: str, current_user: User = Depends(get_current_user)):
+#     raise HTTPException(status_code=404, detail="Запрос на сегмент HLS не поддерживается напрямую через FastAPI")

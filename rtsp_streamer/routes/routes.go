@@ -2,7 +2,6 @@ package routes
 
 import (
 	"database/sql"
-	"net/http"
 	"rtsp_streamer/controllers"
 	"rtsp_streamer/middleware"
 
@@ -10,7 +9,13 @@ import (
 )
 
 func RegisterRoutes(r *gin.Engine, db *sql.DB) {
-	r.StaticFS("/streams", http.Dir("./streams"))
+	r.GET("/streams/*filepath", func(c *gin.Context) {
+		// r.GET("/streams/*filepath", middleware.HLSAuthMiddleware(), func(c *gin.Context) {
+		filepath := c.Param("filepath")
+		fullPath := "./streams" + filepath
+
+		c.File(fullPath)
+	})
 
 	cameraRoutes := r.Group("/")
 	{
